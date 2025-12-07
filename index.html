@@ -1,84 +1,428 @@
 <!DOCTYPE html>
-    <html lang="en"></html>
-    <html>
-        <head>
-            <title>10C Vibes Only</title>
-            <meta charset="UTF-8">
-            <meta name = "author" content = "Nurlan KH">
-            <meta name "description" content="Ubuntu туралы ақпарат беретін сайт">
-            <meta name="keywords" content="Ubuntu, Linux, Диструбы">
-            <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/124765279?s=280&v=4">
-        </head>
-        <body>
-        <h1>10-С Футболшылары!</h1>
-        <table cellpadding="10" cellspacing="0" border="1"
-        style="text-align: center; margin-top: 20px; width: 50%; margin-left: auto; margin-right: auto;">
-        <tr>
-            <th><b>#</b> </th>
-            <th> <b>Аты</b> </th>
-            <th> <b>Клуб</b> </th>
-            <th> <b>Стоимость(dollar)</b> </th>
-        </tr>
-        <tr>
-            <td> 1 </td>
-            <td> Абдурахман </td>
-            <td> Барселона </td>
-            <td> 200,000$ </td>
-                    
-        </tr>
-        <tr>
-            <td> 2 </td>
-            <td> Дарын </td>
-            <td> Ювентус </td>
-            <td> 200,000$  </td>
-        </tr>
-        <tr>
-            <td> 3 </td>
-            <td> Нұрбек </td>
-            <td> ПСЖ </td>
-            <td> 200,000$ </td>
-        </tr>
-        <tr>
-            <td> 4 </td>
-            <td> Ернұр </td>
-            <td> Боруссия Дортмунд </td>
-            <td> 200,000$ </td>
-        </tr>
-        <tr>
-            <td> 5 </td>
-            <td> Нұрлан </td>
-            <td> Тоттенхэм </td>
-            <td> 200,000$ </td>
-        </tr>
-        <tr>
-            <td> 6 </td>
-            <td> Аян </td>
-            <td> Милан </td>
-            <td> 200,000$ </td>
-        </tr>
-        <tr>
-            <td> 7 </td>
-            <td> Сәбит </td>
-            <td> Реал Мадрид </td>
-            <td> 200,000$ </td>
-        </tr>
-        <tr>
-            <td> 8 </td>
-            <td> Нұрасыл </td>
-            <td> Реал Мадрид </td>
-            <td> 200,000$ </td>
-        </tr>
-        <tr>
-            <td> 9 </td>
-            <td> Азамат </td>
-            <td> Челси </td>
-            <td> 200,000$ </td>
-        </tr>
-        <tr>
-            <td> 10 </td>
-            <td> Аман </td>
-            <td> Манчестер Сити </td>
-            <td> 200,000$ </td>
-    </table>
-        </body>
-    </html> 
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 C Class News</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .button1 {
+            background-color: darkgreen;
+            color: aliceblue;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .button1:hover {
+            background-color: rgb(0, 100, 0);
+        }
+
+        input:focus {
+            background-color: #00ff624f;
+            outline: none;
+        }
+
+        .input1, .input2 {
+            width: 100%;
+            max-width: 300px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        .p1 {
+            font-weight: 900;
+            font-family: Roboto, sans-serif;
+            height: 35px;
+            background-color: #003253;
+            color: white;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .div1 {
+            justify-content: space-between;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            background-color: #003253;
+            padding: 15px 20px;
+            gap: 20px;
+        }
+
+        .div1 span {
+            color: aliceblue;
+            font-weight: 600;
+        }
+
+        .div1 a {
+            text-decoration: none;
+            color: rgb(160, 160, 160);
+            font-weight: 600;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .div1 a:hover {
+            color: white;
+        }
+
+        .b1 {
+            color: rgb(0, 3, 163);
+        }
+
+        .news {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .news img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+
+        .news h2 {
+            color: #003399;
+            font-size: 1.5rem;
+            margin: 20px 0 10px 0;
+        }
+
+        .news p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .main-section {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .left-column1 {
+            min-width: 280px;
+            max-width: 400px;
+            flex: 0 1 100%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-column1 p {
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .left-column1 p:first-child {
+            margin-top: 0;
+        }
+
+        .class_table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            font-size: 14px;
+        }
+
+        .class_table td, .class_table th {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .class_table tr:first-child {
+            background-color: #003399;
+            color: white;
+            font-weight: bold;
+        }
+
+        .class_table tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* TABLET & DESKTOP */
+        @media (min-width: 769px) {
+            .main-section {
+                flex-wrap: nowrap;
+            }
+
+            .left-column1 {
+                flex: 0 1 auto;
+            }
+
+            .news {
+                flex: 1;
+            }
+        }
+
+        /* TABLET (768px - 1024px) */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .main-section {
+                gap: 20px;
+            }
+
+            .left-column1 {
+                max-width: 320px;
+            }
+
+            .news h2 {
+                font-size: 1.3rem;
+            }
+
+            .class_table {
+                font-size: 12px;
+            }
+
+            .class_table td, .class_table th {
+                padding: 8px;
+            }
+        }
+
+        /* MOBILE (480px - 768px) */
+        @media (max-width: 768px) {
+            .div1 {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .div1 span:last-child {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .main-section {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .left-column1 {
+                max-width: 100%;
+                flex: 1 1 100%;
+            }
+
+            .news {
+                flex: 1 1 100%;
+            }
+
+            .input1, .input2 {
+                max-width: 100%;
+            }
+
+            .news h2 {
+                font-size: 1.2rem;
+            }
+
+            .class_table {
+                font-size: 12px;
+            }
+
+            .class_table td, .class_table th {
+                padding: 6px 4px;
+            }
+        }
+
+        /* SMALL MOBILE (до 480px) */
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .p1 {
+                height: auto;
+                padding: 8px;
+            }
+
+            .div1 {
+                flex-direction: column;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .div1 span {
+                font-size: 0.9rem;
+            }
+
+            .div1 a {
+                font-size: 0.85rem;
+                margin: 0 5px;
+            }
+
+            .main-section {
+                flex-direction: column;
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .left-column1 {
+                padding: 15px;
+                min-width: auto;
+            }
+
+            .left-column1 p {
+                font-size: 0.9rem;
+            }
+
+            .input1, .input2 {
+                width: 100%;
+                padding: 6px;
+                font-size: 14px;
+            }
+
+            .button1 {
+                width: 100%;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .news h2 {
+                font-size: 1rem;
+                margin: 15px 0 8px 0;
+            }
+
+            .news p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            .news img {
+                width: 100%;
+                height: auto;
+            }
+
+            .class_table {
+                font-size: 11px;
+                margin-top: 15px;
+            }
+
+            .class_table td, .class_table th {
+                padding: 4px 2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p class="p1"></p>
+    </div>
+    <div class="div1">
+        <span style="margin-left: 0;">
+            <b>10 C CLASS</b> NEWS
+        </span>
+        <span style="margin-left: auto; display: flex; gap: 15px;">
+            <a href="../index.html">About</a>
+            <a href="../about.html">Contact</a>
+            <a href="../contact.html">FAQ</a>
+            <a href="../contact.html">Login</a>
+        </span>
+    </div>
+
+    <!-- Email, Password, Таблица и новости -->
+    <section class="main-section">
+        <div class="left-column1">
+            <p>EMAIL: </p>
+            <input class="input1" type="text" placeholder="Insert Email">
+
+            <p style="margin-top: 15px;">Password: </p>
+            <input class="input2" type="password" placeholder="Insert Password">
+
+            <br>
+            <button class="button1">Sign in</button>
+            <p style="font-weight: 400;"> I want to create <b class="b1">new account</b> </p>
+
+            <!-- Таблица в левой колонке -->
+            <h2 style="color: #003399; font-size: 1.1rem; margin-top: 25px;">Лига Таблицасы</h2>
+            <table cellpadding="10" cellspacing="0" border="1" class="class_table">
+                <tr>
+                    <th><b>№</b></th>
+                    <th><b>Құрама</b></th>
+                    <th><b>P</b></th>
+                    <th><b>W</b></th>
+                    <th><b>D</b></th>
+                    <th><b>L</b></th>
+                    <th><b>GD</b></th>
+                    <th><b>Pts</b></th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Қазақстан</td>
+                    <td>10</td>
+                    <td>8</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>+15</td>
+                    <td>25</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Россия</td>
+                    <td>10</td>
+                    <td>7</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>+12</td>
+                    <td>23</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Өзбекстан</td>
+                    <td>10</td>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>4</td>
+                    <td>+5</td>
+                    <td>16</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="news">
+            <h2>Математика Сауаттылық Олимпиадасынан 3-орын алдық!</h2>
+            <img src="class.jpg" alt="class">
+            <p>
+                Жақын арада 10 С сыныбында 3 оқушы қатысып мат.сауаттылық олимпиадасынан 3-орын алып келді! Ол оқушылар
+                - Жәнерке, Перизат, Рабия. Бұл оқушыларға қатысып орын алғанына үлкен рақмет!
+                <a style="color: #003399; text-decoration: none; font-weight: 600;" href="#">Read More</a>
+            </p>
+
+            <h2>Сыныптағы белсенді Информатиктер!</h2>
+            <img src="ученик.webp" alt="student">
+            <p>
+                Сыныптағы Нұрлан және Абдурахман оқушылар Рамазан программист ағайдың арқасында html және css тілдерін
+                үйреніп жүр!
+                <a style="color: #003399; text-decoration: none; font-weight: 600;" href="#">Read More</a>
+            </p>
+        </div>
+    </section>
+</body>
+
+</html>
