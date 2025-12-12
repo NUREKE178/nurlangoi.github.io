@@ -1,0 +1,677 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Фотогалерея — Zhetysai Ibilim 10C</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			/* Gallery Styles */
+			.gallery-hero {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				padding: 70px 20px;
+				text-align: center;
+			}
+			.gallery-hero h1 {
+				font-size: 42px;
+				margin: 0 0 10px 0;
+			}
+			.gallery-hero p {
+				font-size: 18px;
+				opacity: 0.95;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+
+			/* Filter Buttons */
+			.filter-container {
+				text-align: center;
+				padding: 30px 20px;
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+				gap: 12px;
+			}
+			.filter-btn {
+				padding: 0px 20px;
+				border: 2px solid #ddd;
+				background: white;
+				border-radius: 25px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				font-weight: 500;
+				color: #666;
+			}
+			.filter-btn:hover,
+			.filter-btn.active {
+				background: linear-gradient(90deg, #667eea, #764ba2);
+				color: white;
+				border-color: #667eea;
+			}
+
+			/* Gallery Grid */
+			.gallery-container {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+				gap: 20px;
+				padding: 40px 20px;
+				max-width: 1400px;
+				margin: 0 auto;
+			}
+
+			/* Gallery Item */
+			.gallery-item {
+				position: relative;
+				overflow: hidden;
+				border-radius: 15px;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+				cursor: pointer;
+				aspect-ratio: 1 / 1;
+				background: linear-gradient(135deg, #667eea, #764ba2);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: white;
+				font-size: 80px;
+				transition: all 0.3s ease;
+			}
+
+			.gallery-item:hover {
+				transform: scale(1.05);
+				box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+			}
+
+			.gallery-item-image {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			.gallery-item-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.5);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				opacity: 0;
+				transition: all 0.3s ease;
+				color: white;
+				text-align: center;
+				padding: 20px;
+			}
+
+			.gallery-item:hover .gallery-item-overlay {
+				opacity: 1;
+			}
+
+			.overlay-title {
+				font-size: 22px;
+				font-weight: bold;
+				margin-bottom: 10px;
+			}
+
+			.overlay-desc {
+				font-size: 14px;
+				opacity: 0.9;
+			}
+
+			/* Modal */
+			.modal {
+				display: none;
+				position: fixed;
+				z-index: 1000;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.8);
+				animation: fadeIn 0.3s ease;
+			}
+
+			@keyframes fadeIn {
+				from { opacity: 0; }
+				to { opacity: 1; }
+			}
+
+			.modal-content {
+				margin: 5% auto;
+				width: 90%;
+				max-width: 900px;
+				background: white;
+				border-radius: 15px;
+				overflow: hidden;
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+				animation: slideIn 0.3s ease;
+			}
+
+			@keyframes slideIn {
+				from {
+					transform: translateY(-50px);
+					opacity: 0;
+				}
+				to {
+					transform: translateY(0);
+					opacity: 1;
+				}
+			}
+
+			/* Upload form styles */
+			.upload-section {padding: 30px 20px; max-width: 980px; margin: 30px auto; text-align: center;}
+			.upload-form {display:flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center;}
+			.upload-form input[type="file"] {padding:6px;}
+			.upload-form input[type="password"], .upload-form input[type="text"], .upload-form select {padding:8px 10px; border-radius:6px; border:1px solid #ddd;}
+			.upload-form button {padding:10px 16px; border-radius:8px; background: linear-gradient(90deg,#667eea,#764ba2); color:#fff; border:0; cursor:pointer}
+			.upload-msg {margin-top:10px; font-size:14px}
+			.upload-msg.error {color:#c0392b}
+			.upload-msg.success {color:#27ae60}
+
+			.modal-image {
+				width: 100%;
+				max-height: 500px;
+				object-fit: cover;
+				background: linear-gradient(135deg, #667eea, #764ba2);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 120px;
+				color: white;
+			}
+
+			.modal-body {
+				padding: 30px;
+			}
+
+			.modal-body h2 {
+				margin-top: 0;
+				color: #333;
+			}
+
+			.close {
+				position: absolute;
+				right: 20px;
+				top: 20px;
+				font-size: 32px;
+				font-weight: bold;
+				color: white;
+				cursor: pointer;
+				background: rgba(0, 0, 0, 0.5);
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: all 0.3s ease;
+				z-index: 10;
+			}
+
+			.close:hover {
+				background: rgba(0, 0, 0, 0.8);
+			}
+
+			/* Stats */
+			.gallery-stats {
+				background: #f5f5f5;
+				padding: 40px 20px;
+				text-align: center;
+			}
+
+			.stats-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+				gap: 30px;
+				max-width: 1000px;
+				margin: 0 auto;
+			}
+
+			.stat-item h3 {
+				font-size: 36px;
+				color: #667eea;
+				margin: 0;
+			}
+
+			.stat-item p {
+				color: #666;
+				margin: 10px 0 0 0;
+			}
+
+			@media (max-width: 768px) {
+				.gallery-container {
+					grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+					gap: 15px;
+					padding: 20px 15px;
+				}
+
+				.gallery-hero h1 {
+					font-size: 30px;
+				}
+
+				.modal-content {
+					width: 95%;
+					margin: 20% auto;
+				}
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+		<div id="page-wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<h1><a href="index.html">Zhetysai Ibilim 10C</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="special">
+							<a href="#menu" class="menuToggle"><span>Menu</span></a>
+							<div id="menu">
+								<ul>
+									<li><a href="index.html">Home - Меню</a></li>
+											<li><a href="student and teachers.html">Students and Teachers</a></li>
+											
+											<li><a href="gallery.html">Gallery</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
+
+			<!-- Hero Section -->
+			<section class="gallery-hero">
+				<h1>📸 Суреттер топтамасы 10C</h1>
+				<p>
+					Бұл біздің сыныптың ең жақсы сәттерін көрсететін фотогалерея. Мұнда біз бірге өткізген іс-шаралар, жобалар және көңілді сәттеріміздің суреттері бар. Әрбір фото біздің бірлігіміз бен достығымызды көрсетеді. Төмендегі сүзгілерді пайдаланып, әртүрлі категориялар бойынша суреттерді қараңыз!
+				</p>
+			</section>
+
+			<!-- Filter Section -->
+			<div class="filter-container">
+				<button class="filter-btn " onclick="filterGallery('events', this)">🎉 Іс-шаралар</button>
+				<button class="filter-btn " onclick="filterGallery('study', this)">📚 Оқу</button>
+				<button class="filter-btn" onclick="filterGallery('projects', this)">🚀 Жобалар</button>
+				<button class="filter-btn" onclick="filterGallery('fun', this)">😄 Көңілді</button>
+			</div>
+
+			<!-- Main Content -->
+			<article id="main">
+				
+				<div class="gallery-container" id="gallery">
+					<!-- Event 1 -->
+					<div class="gallery-item" data-category="events" onclick="openModal(this)">
+						<div>🎉</div>
+						<div class="gallery-item-overlay">
+							
+						</div>
+					</div>
+
+					<!-- Event 2 -->
+
+					<!-- Study 1 -->
+					<div class="gallery-item" data-category="study" onclick="openModal(this)">
+						<div>📚</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">Олимпиада</div>
+							<div class="overlay-desc">Участие в научном конкурсе</div>
+						</div>
+					</div>
+
+					<!-- Study 2 -->
+					<div class="gallery-item" data-category="study" onclick="openModal(this)">
+						<div>✏️</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">Занятия</div>
+							<div class="overlay-desc">Интерактивные уроки в классе</div>
+						</div>
+					</div>
+
+					<!-- Project 1 -->
+					<div class="gallery-item" data-category="projects" onclick="openModal(this)">
+						<div>💻</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">Веб-проект</div>
+							<div class="overlay-desc">Создание школьного портала</div>
+						</div>
+					</div>
+
+					<!-- Project 2 -->
+					<div class="gallery-item" data-category="projects" onclick="openModal(this)">
+						<div>🤖</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">IT-проект</div>
+							<div class="overlay-desc">Работа над робототехникой</div>
+						</div>
+					</div>
+
+					<!-- Fun 1 -->
+					<div class="gallery-item" data-category="fun" onclick="openModal(this)">
+						<div>😄</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">Селфи класса</div>
+							<div class="overlay-desc">Веселый момент с друзьями</div>
+						</div>
+					</div>
+
+					<!-- Fun 2 -->
+					
+
+					<!-- Event 3 -->
+					
+
+					<!-- Study 3 -->
+					<div class="gallery-item" data-category="study" onclick="openModal(this)">
+						<div>🧪</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">Лаборатория</div>
+							<div class="overlay-desc">Научные эксперименты и опыты</div>
+						</div>
+					</div>
+
+					<!-- Project 3 -->
+					<div class="gallery-item" data-category="projects" onclick="openModal(this)">
+						<div>🎨</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">Дизайн-проект</div>
+							<div class="overlay-desc">Творческая работа и графика</div>
+						</div>
+					</div>
+
+					<!-- Fun 3 -->
+					<div class="gallery-item" data-category="fun" onclick="openModal(this)">
+						<div>🎸</div>
+						<div class="gallery-item-overlay">
+							<div class="overlay-title">Концерт</div>
+							<div class="overlay-desc">Талант-шоу в школе</div>
+						</div>
+					</div>
+				</div>
+			</article>
+
+			<!-- Stats Section -->
+
+			<!-- Add Image (requires password) -->
+			<section class="upload-section">
+				<h2>
+					📤 Өзімнің телефоным арқылы сурет
+				</h2>
+				<form id="uploadForm" class="upload-form" onsubmit="handleAddImageSubmit(event)">
+					<input type="file" id="uploadFile" accept="image/*" required />
+					<input type="text" id="uploadTitle" placeholder="Заголовок" required />
+					<select id="uploadCategory">
+						<option value="events">🎉 Іс-шаралар</option>
+						<option value="study">📚 Оқу</option>
+						<option value="projects">🚀 Жобалар</option>
+						<option value="fun">😄 Көңілді</option>
+					</select>
+					<input type="password" id="uploadPassword" placeholder="Пароль" required />
+					<label style="display:flex; align-items:center; gap:8px;">
+						<input type="checkbox" id="uploadToServer" />
+						<span style="font-size:13px;">
+							
+						</span>
+					</label>
+					<button type="submit" style="padding: 0px 20px;text-align: center;">Қосу</button>
+				</form>
+				<div id="uploadMsg" class="upload-msg" aria-live="polite"></div>
+			</section>
+
+
+			<!-- Modal -->
+			<div id="imageModal" class="modal">
+				<div class="modal-content">
+					<span class="close" onclick="closeModal()">&times;</span>
+					<div class="modal-image" id="modalImage">
+						<div style="font-size: 120px;">📸</div>
+					</div>
+					<div class="modal-body">
+						<h2 id="modalTitle">Фото</h2>
+						<p id="modalDesc">Сурет сипаттамасы</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><span style="text-align:center; display:block; color:#666">Соцсети скрыты</span></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Zhetysai Ibilim 10C</li><li> Year: 2025-2026</li>
+				</ul>
+			</footer>
+
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+		<!-- Gallery Script -->
+		<script>
+			function filterGallery(category, btn) {
+				const items = document.querySelectorAll('.gallery-item');
+				const btns = document.querySelectorAll('.filter-btn');
+
+				// Update button styles
+				btns.forEach(b => b.classList.remove('active'));
+				if (btn && btn.classList) {
+					btn.classList.add('active');
+				} else {
+					// fallback: try to find a button whose onclick contains the category
+					const fallback = Array.from(btns).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(category) !== -1);
+					if (fallback) fallback.classList.add('active');
+				}
+
+				// Filter items
+				items.forEach(item => {
+					if (category === 'all' || item.getAttribute('data-category') === category) {
+						item.style.display = 'flex';
+					} else {
+						item.style.display = 'none';
+					}
+				});
+			}
+
+			function openModal(element) {
+				const modal = document.getElementById('imageModal');
+				const overlay = element.querySelector('.gallery-item-overlay');
+				const title = overlay.querySelector('.overlay-title').textContent;
+				const desc = overlay.querySelector('.overlay-desc').textContent;
+				const emoji = element.querySelector('div').textContent;
+
+				document.getElementById('modalTitle').textContent = title;
+				document.getElementById('modalDesc').textContent = desc;
+				document.getElementById('modalImage').textContent = emoji;
+				document.getElementById('modalImage').style.fontSize = '100px';
+				document.getElementById('modalImage').style.display = 'flex';
+				document.getElementById('modalImage').style.alignItems = 'center';
+				document.getElementById('modalImage').style.justifyContent = 'center';
+
+				modal.style.display = 'block';
+			}
+
+			function closeModal() {
+				document.getElementById('imageModal').style.display = 'none';
+			}
+
+			window.onclick = function(event) {
+				const modal = document.getElementById('imageModal');
+				if (event.target === modal) {
+					modal.style.display = 'none';
+				}
+			}
+
+			// --- Upload with password (client-side) ---
+			const UPLOAD_PASSWORD = 'ibilim2025'; // change this value if you want a different password
+
+			function handleAddImageSubmit(e) {
+				e.preventDefault();
+				const pwd = document.getElementById('uploadPassword').value;
+				const msgEl = document.getElementById('uploadMsg');
+				if (pwd !== UPLOAD_PASSWORD) {
+					msgEl.textContent = 'Қате пароль. Суретті қосу мүмкін емес.';
+					msgEl.className = 'upload-msg error';
+					return;
+				}
+
+				const fileInput = document.getElementById('uploadFile');
+				if (!fileInput.files || fileInput.files.length === 0) {
+					msgEl.textContent = 'Өтініш, суретті таңдаңыз.';
+					msgEl.className = 'upload-msg error';
+					return;
+				}
+
+				const file = fileInput.files[0];
+				const reader = new FileReader();
+				reader.onload = function(ev) {
+					const dataUrl = ev.target.result;
+					const title = document.getElementById('uploadTitle').value || 'Фото';
+					const category = document.getElementById('uploadCategory').value || 'fun';
+
+					// Create gallery item
+					const el = document.createElement('div');
+					el.className = 'gallery-item';
+					el.setAttribute('data-category', category);
+					el.setAttribute('onclick', 'openModal(this)');
+
+					const img = document.createElement('img');
+					img.className = 'gallery-item-image';
+					img.src = dataUrl;
+
+					const overlay = document.createElement('div');
+					overlay.className = 'gallery-item-overlay';
+					overlay.innerHTML = '<div class="overlay-title">'+escapeHtml(title)+'</div><div class="overlay-desc">Добавлено пользователем</div>';
+
+					el.appendChild(img);
+					el.appendChild(overlay);
+
+					const gallery = document.getElementById('gallery');
+					gallery.insertBefore(el, gallery.firstChild);
+
+					// Save to localStorage
+					saveImageToLocal({src: dataUrl, title: title, category: category, addedAt: Date.now()});
+
+					msgEl.textContent = 'Изображение успешно добавлено.';
+					msgEl.className = 'upload-msg success';
+					// reset form
+					document.getElementById('uploadForm').reset();
+
+					// If user requested server upload, attempt it (non-blocking)
+					if (document.getElementById('uploadToServer').checked) {
+						// Use FormData to send original file to server endpoint '/upload' (Node) or 'upload.php' (PHP)
+						uploadFileToServer(file, document.getElementById('uploadPassword').value)
+							.then(res => {
+								console.log('Server upload response', res);
+								// optionally show message
+								if (res && res.ok) {
+									msgEl.textContent = 'Изображение добавлено и отправлено на сервер.';
+									msgEl.className = 'upload-msg success';
+								}
+							})
+							.catch(err => {
+								console.warn('Server upload failed', err);
+								msgEl.textContent = 'Локально добавлено, но загрузка на сервер не удалась.';
+								msgEl.className = 'upload-msg error';
+							});
+					}
+				};
+				reader.readAsDataURL(file);
+			}
+
+			// Local storage helpers
+			function getSavedImages() {
+				try {
+					const raw = localStorage.getItem('class_gallery_images');
+					return raw ? JSON.parse(raw) : [];
+				} catch (e) {
+					console.warn('Failed to parse saved images', e);
+					return [];
+				}
+			}
+
+			function saveImageToLocal(obj) {
+				const list = getSavedImages();
+				list.unshift(obj);
+				try {
+					localStorage.setItem('class_gallery_images', JSON.stringify(list));
+				} catch (e) {
+					console.warn('Failed to save to localStorage', e);
+				}
+			}
+
+			function loadSavedImages() {
+				const list = getSavedImages();
+				const gallery = document.getElementById('gallery');
+				if (!gallery) return;
+				list.forEach(item => {
+					const el = document.createElement('div');
+					el.className = 'gallery-item';
+					el.setAttribute('data-category', item.category || 'fun');
+					el.setAttribute('onclick', 'openModal(this)');
+
+					const img = document.createElement('img');
+					img.className = 'gallery-item-image';
+					img.src = item.src;
+
+					const overlay = document.createElement('div');
+					overlay.className = 'gallery-item-overlay';
+					overlay.innerHTML = '<div class="overlay-title">'+escapeHtml(item.title || 'Фото')+'</div><div class="overlay-desc">Добавлено ранее</div>';
+
+					el.appendChild(img);
+					el.appendChild(overlay);
+					gallery.insertBefore(el, gallery.firstChild);
+				});
+			}
+
+			// Attempt to upload original File to server endpoint using fetch + FormData
+			function uploadFileToServer(file, password) {
+				return new Promise((resolve, reject) => {
+					try {
+						const fd = new FormData();
+						fd.append('image', file);
+						fd.append('password', password);
+						// By default try Node.js endpoint '/upload'
+						fetch('/upload', {method: 'POST', body: fd})
+							.then(r => r.json())
+							.then(json => resolve(json))
+							.catch(err => {
+								// try PHP fallback
+								fetch('upload.php', {method:'POST', body: fd})
+									.then(r=>r.json()).then(json=>resolve(json)).catch(err2=>reject(err2));
+							});
+					} catch (e) { reject(e); }
+				});
+			}
+
+			// Load saved images and set default filter on start
+			window.addEventListener('DOMContentLoaded', function() {
+				loadSavedImages();
+				// Default to the first filter button (usually 'events')
+				const firstBtn = document.querySelector('.filter-container .filter-btn');
+				if (firstBtn) {
+					filterGallery('events', firstBtn);
+				}
+			});
+
+			function escapeHtml(str) {
+				return str.replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+			}
+		</script>
+
+	</body>
+</html>
